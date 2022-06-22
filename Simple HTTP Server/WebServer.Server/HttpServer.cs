@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace BasicWebServer.Server
+namespace WebServer.Server
 {
     public class HttpServer
     {
         private readonly IPAddress ipAddress;
         private readonly int port;
         private readonly TcpListener serverListener;
-        
+
 
         public HttpServer(string ipAddress, int port)
         {
@@ -39,8 +35,8 @@ namespace BasicWebServer.Server
             {
                 var connection = serverListener.AcceptTcpClient();
 
-                var networkStream = connection.GetStream();  
-                
+                var networkStream = connection.GetStream();
+
                 var requestTxt = this.ReadRequest(networkStream);
                 Console.WriteLine(requestTxt);
 

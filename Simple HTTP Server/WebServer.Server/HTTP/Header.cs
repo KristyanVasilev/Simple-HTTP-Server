@@ -1,11 +1,6 @@
-﻿using BasicWebServer.Server.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WebServer.Server.Common;
 
-namespace BasicWebServer.Server.HTTP
+namespace WebServer.Server.HTTP
 {
     public class Header
     {

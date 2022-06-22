@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BasicWebServer.Server.HTTP
+﻿namespace WebServer.Server.HTTP
 {
     public class Request
     {
@@ -41,8 +35,8 @@ namespace BasicWebServer.Server.HTTP
 
         private static HeaderCollection ParseHeaders(IEnumerable<string> headersLines)
         {
-            var headerCollection = new HeaderCollection(); 
-            
+            var headerCollection = new HeaderCollection();
+
             foreach (var line in headersLines)
             {
                 if (line == string.Empty)
@@ -50,7 +44,7 @@ namespace BasicWebServer.Server.HTTP
                     break;
                 }
 
-                var headersParts =  line.Split(':', 2);
+                var headersParts = line.Split(':', 2);
 
                 if (headersParts.Length != 2)
                 {
@@ -77,5 +71,5 @@ namespace BasicWebServer.Server.HTTP
                 throw new InvalidOperationException($"Method '{method} is not supported'");
             }
         }
-    }   
+    }
 }
