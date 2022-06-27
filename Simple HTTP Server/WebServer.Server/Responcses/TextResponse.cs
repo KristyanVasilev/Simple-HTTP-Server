@@ -5,7 +5,7 @@ namespace WebServer.Server.Responcses
     public class TextResponse : ContentResponse
     {
         public TextResponse(string text, Action<Request, Response> preRenderAction = null)
-            : base(text, ContentType.PlainText)
+                    : base(text, ContentType.PlainText, preRenderAction)
         {
         }
     }

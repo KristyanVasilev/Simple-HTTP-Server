@@ -9,7 +9,6 @@ namespace WebServer.Server.HTTP
         public HeaderCollection()
             => this.headers = new Dictionary<string, Header>();
 
-
         public string this[string name]
           => this.headers[name].Value;
 

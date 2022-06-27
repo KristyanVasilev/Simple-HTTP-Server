@@ -8,7 +8,7 @@ namespace WebServer.Server.HTTP
         {
             this.StatusCode = statusCode;
 
-            this.Headers.Add(Header.Server, "My web server");
+            this.Headers.Add(Header.Server, "My Web Server");
             this.Headers.Add(Header.Date, $"{DateTime.UtcNow:r}");
         }
 
@@ -16,9 +16,11 @@ namespace WebServer.Server.HTTP
 
         public HeaderCollection Headers { get; } = new HeaderCollection();
 
+        public CookieCollection Cookies { get; } = new CookieCollection();
+
         public string Body { get; set; }
 
-        public Action<Request, Response> PreRenderAction { get; protected set; }
+        public byte[] FileContent { get; set; }
 
         public override string ToString()
         {
@@ -29,6 +31,11 @@ namespace WebServer.Server.HTTP
             foreach (var header in this.Headers)
             {
                 result.AppendLine(header.ToString());
+            }
+
+            foreach (var cookie in this.Cookies)
+            {
+                result.AppendLine($"{Header.SetCookie}: {cookie}");
             }
 
             result.AppendLine();

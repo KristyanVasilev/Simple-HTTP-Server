@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using BasicWebServer.Server.Common;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using WebServer.Server.HTTP;
@@ -11,7 +12,10 @@ namespace WebServer.Server
         private readonly IPAddress ipAddress;
         private readonly int port;
         private readonly TcpListener serverListener;
+
         private readonly RoutingTable routingTable;
+
+        public readonly IServiceCollection ServiceCollection;
 
         public HttpServer(string ipAddress, int port, Action<IRoutingTable> routingTableConfiguration)
         {
@@ -21,6 +25,7 @@ namespace WebServer.Server
             this.serverListener = new TcpListener(this.ipAddress, port);
 
             routingTableConfiguration(this.routingTable = new RoutingTable());
+            ServiceCollection = new ServiceCollection();
         }
 
         public HttpServer(int port, Action<IRoutingTable> routingTable)
@@ -29,7 +34,7 @@ namespace WebServer.Server
         }
 
         public HttpServer(Action<IRoutingTable> routingTable)
-            : this("127.0.0.1", 8080, routingTable)
+            : this(8080, routingTable)
         {
         }
 
@@ -52,14 +57,11 @@ namespace WebServer.Server
 
                     Console.WriteLine(requestText);
 
-                    var request = Request.Parse(requestText);
+                    var request = Request.Parse(requestText, ServiceCollection);
 
                     var response = this.routingTable.MatchRequest(request);
 
-                    if (response.PreRenderAction != null)
-                    {
-                        response.PreRenderAction(request, response);
-                    }
+                    AddSession(request, response);
 
                     await WriteResponse(networkStream, response);
 
@@ -99,7 +101,25 @@ namespace WebServer.Server
         {
             var resposeBytes = Encoding.UTF8.GetBytes(response.ToString());
 
+            if (response.FileContent != null)
+            {
+                resposeBytes = resposeBytes
+                    .Concat(response.FileContent)
+                    .ToArray();
+            }
+
             await networkStream.WriteAsync(resposeBytes);
+        }
+
+        private static void AddSession(Request request, Response response)
+        {
+            var sessionExists = request.Session.ContainsKey(Session.SessionCurrentDateKey);
+
+            if (!sessionExists)
+            {
+                request.Session[Session.SessionCurrentDateKey] = DateTime.Now.ToString();
+                response.Cookies.Add(Session.SessionCookieName, request.Session.Id);
+            }
         }
     }
 }
