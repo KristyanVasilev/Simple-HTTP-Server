@@ -44,7 +44,7 @@ namespace WebServer.Server.Routing
             return this;
         }
 
-        public Response MathcRequest(Request request)
+        public Response MatchRequest(Request request)
         {
             var requestMethod = request.Method;
             var requestUrl = request.Url;
