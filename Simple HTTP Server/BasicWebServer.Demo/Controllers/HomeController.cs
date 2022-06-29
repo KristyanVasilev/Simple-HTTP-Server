@@ -48,7 +48,7 @@ namespace BasicWebServer.Demo.Controllers
 
         public Response Cookies()
         {
-            var requestHasCookies = Request.Cookies.Any(c => c.Name != Session.SessionCookieName);
+            var requestHasCookies = Request.Cookies.Any(c => c.Name != Server.HTTP.Session.SessionCookieName);
             var bodyText = String.Empty;
 
             if (requestHasCookies)
@@ -87,6 +87,26 @@ namespace BasicWebServer.Demo.Controllers
             }
 
             return Html(bodyText, cookies);
+        }
+
+        public Response Session()
+        {
+            var sessionExists = Request.Session
+               .ContainsKey(Server.HTTP.Session.SessionCurrentDateKey);
+
+            var bodyText = String.Empty;
+
+            if (sessionExists)
+            {
+                var currentDate = Request.Session[Server.HTTP.Session.SessionCurrentDateKey];
+                bodyText = $"Stored date: {currentDate}!";
+            }
+            else
+            {
+                bodyText = "Current date stored!";
+            }
+
+            return Text(bodyText);
         }
     }
 }
