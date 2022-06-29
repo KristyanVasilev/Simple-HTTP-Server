@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicWebServer.Server", "BasicWebServer.Server\BasicWebServer.Server.csproj", "{F6260181-0C0A-4509-8933-E2474E97AE02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicWebServer.Demo", "BasicWebServer.Demo\BasicWebServer.Demo.csproj", "{ACC6BA72-F2DC-47B4-83C1-769BEDC2F692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicWebServer.Demo", "BasicWebServer.Demo\BasicWebServer.Demo.csproj", "{ACC6BA72-F2DC-47B4-83C1-769BEDC2F692}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

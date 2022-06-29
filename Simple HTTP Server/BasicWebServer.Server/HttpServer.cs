@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using BasicWebServer.Server.HTTP;
 using BasicWebServer.Server.Routing;
+using System.Linq;
 
 namespace BasicWebServer.Server
 {
@@ -101,9 +102,16 @@ namespace BasicWebServer.Server
 
         private async Task WriteResponse(NetworkStream networkStream, Response response)
         {
-            var resposeBytes = Encoding.UTF8.GetBytes(response.ToString());
+            var responseBytes = Encoding.UTF8.GetBytes(response.ToString());
 
-            await networkStream.WriteAsync(resposeBytes);
+            if (response.FileContent != null)
+            {
+                responseBytes = responseBytes
+                    .Concat(response.FileContent)
+                    .ToArray();
+            }
+
+            await networkStream.WriteAsync(responseBytes);
         }
 
         private static void AddSession(Request request, Response response)

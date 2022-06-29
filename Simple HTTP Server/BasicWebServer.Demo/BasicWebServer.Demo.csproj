@@ -9,4 +9,10 @@
     <ProjectReference Include="..\BasicWebServer.Server\BasicWebServer.Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="content.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
