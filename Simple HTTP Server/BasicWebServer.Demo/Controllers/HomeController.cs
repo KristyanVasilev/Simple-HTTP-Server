@@ -10,17 +10,7 @@ namespace BasicWebServer.Demo.Controllers
     public class HomeController : Controller
     {
 
-        private const string DownloadForm = @"<form action='/Content' method='POST'>
-                <input type='submit' value ='Download Sites Content' /> 
-            </form>";
-
         private const string FileName = "content.txt";
-
-        private const string HtmlForm = @"<form action='/HTML' method='POST'>
-            Name: <input type='text' name='Name'/>
-            Age: <input type='number' name ='Age'/>
-            <input type='submit' value ='Save' />
-        </form>";
 
         public HomeController(Request request)
             :base(request)
@@ -29,7 +19,7 @@ namespace BasicWebServer.Demo.Controllers
 
         public Response Index() => Text("Hello from the server!");
         public Response Redirect() => Redirect("https://softuni.org");
-        public Response Html() => Html(HtmlForm);
+        public Response Html() => View();
         public Response HtmlFormPost()
         {
             var sb = new StringBuilder();
@@ -44,7 +34,7 @@ namespace BasicWebServer.Demo.Controllers
 
         public Response DownloadContent() => File(FileName);
 
-        public Response Content() => Html(DownloadForm);
+        public Response Content() => View();
 
         public Response Cookies()
         {
