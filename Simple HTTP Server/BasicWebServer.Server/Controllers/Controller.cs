@@ -17,8 +17,8 @@ namespace BasicWebServer.Server.Controllers
 
         protected Response Text(string text) => new TextResponse(text);
         protected Response Html(string text) => new HtmlResponse(text);
-        protected Response Html(string text, CookieCollection cookies) 
-        { 
+        protected Response Html(string text, CookieCollection cookies)
+        {
             var response = new HtmlResponse(text);
 
             if (cookies != null)
@@ -36,8 +36,11 @@ namespace BasicWebServer.Server.Controllers
         protected Response NotFound() => new NotFoundResponse();
         protected Response Redirect(string location) => new RedirectResponse(location);
         protected Response File(string fileName) => new FileResponse(fileName);
-        protected Response View([CallerMemberName] string viewName = "") 
+        protected Response View([CallerMemberName] string viewName = "")
             => new ViewResponse(viewName, GetControllerName());
+
+        protected Response View(object model, [CallerMemberName] string viewName = "")
+            => new ViewResponse(viewName, GetControllerName(), model);
 
         private string GetControllerName()
             => this.GetType().Name
