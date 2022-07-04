@@ -15,10 +15,14 @@ namespace BasicWebServer.Server.Routing
             [Method.Get] = new(StringComparer.InvariantCultureIgnoreCase),
             [Method.Post] = new(StringComparer.InvariantCultureIgnoreCase),
             [Method.Put] = new(StringComparer.InvariantCultureIgnoreCase),
-            [Method.Delete] = new(StringComparer.InvariantCultureIgnoreCase),
+            [Method.Delete] = new(StringComparer.InvariantCultureIgnoreCase)
         };
 
-        public IRoutingTable Map(Method method, string path, Func<Request, Response> responseFunction)
+
+        public IRoutingTable Map(
+            Method method, 
+            string path, 
+            Func<Request, Response> responseFunction)
         {
             Guard.AgainstNull(path, nameof(path));
             Guard.AgainstNull(responseFunction, nameof(responseFunction));
@@ -26,9 +30,9 @@ namespace BasicWebServer.Server.Routing
             switch (method)
             {
                 case Method.Get:
-                   return MapGet(path, responseFunction);
+                    return MapGet(path, responseFunction);
                 case Method.Post:
-                    return MapPost(path, responseFunction);
+                    return MapPost(path, responseFunction); 
                 case Method.Put:
                 case Method.Delete:
                 default:
@@ -36,15 +40,23 @@ namespace BasicWebServer.Server.Routing
             }
         }
 
-        private IRoutingTable MapGet(string path, Func<Request, Response> responseFunction)
+        private IRoutingTable MapGet(
+            string path,
+            Func<Request, Response> responseFunction)
         {
-            this.routes[Method.Get][path] = responseFunction;
+            Guard.AgainstDuplicatedKey(routes[Method.Get], path, "RoutingTable.Get");
+            routes[Method.Get][path] = responseFunction;
+
             return this;
         }
 
-        private IRoutingTable MapPost(string path, Func<Request, Response> responseFunction)
+        private IRoutingTable MapPost(
+            string path,
+            Func<Request, Response> responseFunction)
         {
-            this.routes[Method.Post][path] = responseFunction;
+            Guard.AgainstDuplicatedKey(routes[Method.Post], path, "RoutingTable.Post");
+            routes[Method.Post][path] = responseFunction;
+
             return this;
         }
 

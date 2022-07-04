@@ -12,14 +12,15 @@ namespace BasicWebServer.Server.Common
 
         public ServiceCollection()
         {
-            this.services = new Dictionary<Type, Type>();
+            services = new Dictionary<Type, Type>();
         }
 
         public IServiceCollection Add<TService, TImplementation>()
             where TService : class
             where TImplementation : TService
         {
-            this.services[typeof(TService)] = typeof(TImplementation);
+            services[typeof(TService)] = typeof(TImplementation);
+
             return this;
         }
 
@@ -38,7 +39,7 @@ namespace BasicWebServer.Server.Common
             {
                 throw new InvalidOperationException($"Service {serviceType.FullName} is not registered");
             }
-
+            
             var constructors = serviceType.GetConstructors();
 
             if (constructors.Length > 1)
@@ -46,13 +47,13 @@ namespace BasicWebServer.Server.Common
                 throw new InvalidOperationException("Multiple constructors are not supported");
             }
 
-            var constructor = constructors[0];
-            var paramaeters = constructor.GetParameters();
-            var parameterValues = new object[paramaeters.Length];
+            var constructor = constructors.First();
+            var parameters = constructor.GetParameters();
+            var parameterValues = new object[parameters.Length];
 
             for (int i = 0; i < parameterValues.Length; i++)
             {
-                var parameterType = paramaeters[i].ParameterType;
+                var parameterType = parameters[i].ParameterType;
                 var parameterValue = CreateInstance(parameterType);
 
                 parameterValues[i] = parameterValue;

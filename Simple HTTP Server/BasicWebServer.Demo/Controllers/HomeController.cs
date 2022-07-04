@@ -1,7 +1,7 @@
 ﻿using BasicWebServer.Demo.Models;
+using BasicWebServer.Server.Attributes;
 using BasicWebServer.Server.Controllers;
 using BasicWebServer.Server.HTTP;
-using System;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -10,23 +10,30 @@ namespace BasicWebServer.Demo.Controllers
 {
     public class HomeController : Controller
     {
-
         private const string FileName = "content.txt";
 
         public HomeController(Request request)
-            :base(request)
+            : base(request)
         {
+
         }
 
+        [HttpGet]
         public Response Index() => Text("Hello from the server!");
-        public Response Redirect() => Redirect("https://softuni.org");
+
+        public Response Student(string name, int age) => Text($"I'm {name} and I'm {age} years old");
+
+        public Response Redirect() => Redirect("https://softuni.bg");
+
         public Response Html() => View();
+
+        [HttpPost]
         public Response HtmlFormPost()
         {
-           string name = Request.Form["Name"];
-           string age = Request.Form["Age"];
+            string name = Request.Form["Name"];
+            string age = Request.Form["Age"];
 
-            var model = new FormViewModel
+            var model = new FormViewModel()
             {
                 Name = name,
                 Age = int.Parse(age)
@@ -37,12 +44,10 @@ namespace BasicWebServer.Demo.Controllers
 
         public Response DownloadContent() => File(FileName);
 
-        public Response Content() => View();
-
         public Response Cookies()
         {
             var requestHasCookies = Request.Cookies.Any(c => c.Name != Server.HTTP.Session.SessionCookieName);
-            var bodyText = String.Empty;
+            var bodyText = "";
 
             if (requestHasCookies)
             {
@@ -64,6 +69,7 @@ namespace BasicWebServer.Demo.Controllers
                 cookieText.Append("</table>");
 
                 bodyText = cookieText.ToString();
+
                 return Html(bodyText);
             }
             else
@@ -85,9 +91,9 @@ namespace BasicWebServer.Demo.Controllers
         public Response Session()
         {
             var sessionExists = Request.Session
-               .ContainsKey(Server.HTTP.Session.SessionCurrentDateKey);
+                .ContainsKey(Server.HTTP.Session.SessionCurrentDateKey);
 
-            var bodyText = String.Empty;
+            var bodyText = "";
 
             if (sessionExists)
             {
@@ -101,5 +107,7 @@ namespace BasicWebServer.Demo.Controllers
 
             return Text(bodyText);
         }
+
+        public Response Content() => View();
     }
 }

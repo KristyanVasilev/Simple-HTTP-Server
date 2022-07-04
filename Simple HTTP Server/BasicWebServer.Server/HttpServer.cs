@@ -18,7 +18,7 @@ namespace BasicWebServer.Server
 
         private readonly RoutingTable routingTable;
 
-        public readonly IServiceCollection ServiceCollection;
+        public readonly IServiceCollection ServiceCollection; 
 
         public HttpServer(string ipAddress, int port, Action<IRoutingTable> routingTableConfiguration)
         {
@@ -28,7 +28,7 @@ namespace BasicWebServer.Server
             this.serverListener = new TcpListener(this.ipAddress, port);
 
             routingTableConfiguration(this.routingTable = new RoutingTable());
-            this.ServiceCollection = new ServiceCollection();
+            ServiceCollection = new ServiceCollection();
         }
 
         public HttpServer(int port, Action<IRoutingTable> routingTable)
@@ -102,16 +102,16 @@ namespace BasicWebServer.Server
 
         private async Task WriteResponse(NetworkStream networkStream, Response response)
         {
-            var responseBytes = Encoding.UTF8.GetBytes(response.ToString());
+            var resposeBytes = Encoding.UTF8.GetBytes(response.ToString());
 
             if (response.FileContent != null)
             {
-                responseBytes = responseBytes
+                resposeBytes = resposeBytes
                     .Concat(response.FileContent)
                     .ToArray();
             }
 
-            await networkStream.WriteAsync(responseBytes);
+            await networkStream.WriteAsync(resposeBytes);
         }
 
         private static void AddSession(Request request, Response response)

@@ -20,7 +20,7 @@ namespace BasicWebServer.Server.Responses
             if (File.Exists(this.FileName))
             {
                 this.Body = string.Empty;
-                this.FileContent = File.ReadAllBytes(this.FileName);
+                FileContent = File.ReadAllBytes(this.FileName);
 
                 var fileBytesCount = new FileInfo(this.FileName).Length;
                 this.Headers.Add(Header.ContentLength, fileBytesCount.ToString());

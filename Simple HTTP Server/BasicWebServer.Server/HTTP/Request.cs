@@ -23,6 +23,7 @@ namespace BasicWebServer.Server.HTTP
         public Session Session { get; private set; }
 
         public IReadOnlyDictionary<string, string> Form { get; private set; }
+
         public IReadOnlyDictionary<string, string> Query { get; private set; }
 
         public static IServiceCollection ServiceCollection { get; private set; }
@@ -67,25 +68,24 @@ namespace BasicWebServer.Server.HTTP
         {
             string url = String.Empty;
             Dictionary<string, string> query = new Dictionary<string, string>();
-            var parts = queryString.Split("?");
+            var parts = queryString.Split("?",2);
 
-            if (parts.Length == 1)
-            {
-                url = parts[0];
-            }
-            else
+            if (parts.Length > 1)
             {
                 var queryParams = parts[1].Split("&");
 
-                foreach (var item in queryParams)
+                foreach (var pair in queryParams)
                 {
-                    var param = item.Split("=");
+                    var param = pair.Split('=');
+                    
                     if (param.Length == 2)
                     {
                         query.Add(param[0], param[1]);
                     }
                 }
             }
+
+            url = parts[0];
 
             return (url, query);
         }

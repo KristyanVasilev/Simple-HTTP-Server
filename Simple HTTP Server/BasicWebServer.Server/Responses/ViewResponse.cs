@@ -1,22 +1,27 @@
 ﻿using BasicWebServer.Server.HTTP;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BasicWebServer.Server.Responses
 {
-    public class ViewResponse : ContentResponse
+    public  class ViewResponse : ContentResponse
     {
-        private const char PathSeparathor = '/';
+        private const char PathSeparator = '/';
+
         public ViewResponse(string viewName, string controllerName, object model = null)
-            : base(String.Empty, ContentType.Html)
+            : base(string.Empty, ContentType.Html)
         {
-            if (!viewName.Contains(PathSeparathor))
+            if (!viewName.Contains(PathSeparator))
             {
-                viewName = controllerName + PathSeparathor + viewName;
+                viewName = controllerName + PathSeparator + viewName;
             }
 
-            var viewPath = Path.GetFullPath($"./Views/{viewName.TrimStart(PathSeparathor)}.cshtml");
+            var viewPath = Path
+                .GetFullPath($"./Views/{viewName.TrimStart(PathSeparator)}.cshtml");
             var viewContent = File.ReadAllText(viewPath);
 
             if (model != null)
@@ -24,7 +29,7 @@ namespace BasicWebServer.Server.Responses
                 viewContent = PopulateModel(viewContent, model);
             }
 
-            this.Body = viewContent;
+            Body = viewContent;
         }
 
         private string PopulateModel(string viewContent, object model)

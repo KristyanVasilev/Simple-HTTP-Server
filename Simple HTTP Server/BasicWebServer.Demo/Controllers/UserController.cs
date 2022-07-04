@@ -1,17 +1,15 @@
 ﻿using BasicWebServer.Server.Controllers;
 using BasicWebServer.Server.HTTP;
-using System;
 
 namespace BasicWebServer.Demo.Controllers
 {
     public class UserController : Controller
     {
-
         private const string Username = "user";
 
         private const string Password = "user123";
 
-        public UserController(Request request)
+        public UserController(Request request) 
             : base(request)
         {
         }
@@ -20,7 +18,7 @@ namespace BasicWebServer.Demo.Controllers
         {
             Request.Session.Clear();
 
-            var bodyText = String.Empty;
+            var bodyText = "";
 
             var usernameMatches = Request.Form["Username"] == Username;
             var passwordMatches = Request.Form["Password"] == Password;
@@ -28,7 +26,7 @@ namespace BasicWebServer.Demo.Controllers
             if (usernameMatches && passwordMatches)
             {
                 Request.Session[Session.SessionUserKey] = "MyUserId";
-                var cookies = new CookieCollection();
+                CookieCollection cookies = new CookieCollection();
                 cookies.Add(Session.SessionCookieName,
                     Request.Session.Id);
 
@@ -40,7 +38,7 @@ namespace BasicWebServer.Demo.Controllers
             return Redirect("/Login");
         }
 
-        public Response GetUserData()
+        internal Response GetUserData()
         {
             if (Request.Session.ContainsKey(Session.SessionUserKey))
             {
@@ -50,7 +48,7 @@ namespace BasicWebServer.Demo.Controllers
             return Redirect("/Login");
         }
 
-        public Response LogoutUser()
+        internal Response Logout()
         {
             Request.Session.Clear();
 
